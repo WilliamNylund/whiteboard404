@@ -13,14 +13,14 @@ currData = null;
 
 const io = socketIO(http, {
   cors: {
-    origin: clientUrl,
+    origin: "*",
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
 
 var corsOptions = {
-  origin: clientUrl,
+  origin: "*",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
