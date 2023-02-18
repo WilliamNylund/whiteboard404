@@ -23,38 +23,25 @@ const Board = (props: Iprops) => {
   let ctx = undefined;
 
   let isDrawing = false;
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [lastPong, setLastPong] = useState(null);
-
+  console.log(props.color);
+  console.log(props.size);
   const fetchCanvas = async () => {
     axios.get('http://localhost:5000/canvas').then((res) => {
-        var image = new Image();
-        var canvas = document.querySelector('#board');
-        var ctx = canvas.getContext('2d');
-        image.onload = function () {
-          ctx.drawImage(image, 0, 0);
-          isDrawing = false;
-        };
-        image.src = res.data;
+      var image = new Image();
+      var canvas = document.querySelector('#board');
+      var ctx = canvas.getContext('2d');
+      image.onload = function () {
+        ctx.drawImage(image, 0, 0);
+        isDrawing = false;
+      };
+      image.src = res.data;
     });
   };
 
   useEffect(() => {
     fetchCanvas();
-    socket.on('connect', () => {
-      setIsConnected(true);
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-    });
-
-    socket.on('pong', () => {
-      setLastPong(new Date().toISOString());
-    });
 
     socket.on('canvas-data', function (data) {
-      console.log('yooo');
       var interval = setInterval(function () {
         if (isDrawing) return;
         isDrawing = true;
@@ -70,18 +57,20 @@ const Board = (props: Iprops) => {
       }, 200);
     });
     drawOnCanvas();
-
-    return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('pong');
-    };
   }, []);
+
+  useEffect(() => {
+    var canvas = document.querySelector('#board');
+    var ctx = canvas.getContext('2d');
+    ctx.strokeStyle = props.color;
+    ctx.lineWidth = props.size;
+  }, [props.color, props.size]);
 
   const drawOnCanvas = () => {
     console.log('drawOnCanvas');
     var canvas = document.querySelector('#board');
     ctx = canvas.getContext('2d');
+    console.log(props.size)
     ctx.strokeStyle = props.color;
     ctx.lineWidth = props.size;
     var sketch = document.querySelector('#sketch');
@@ -97,8 +86,6 @@ const Board = (props: Iprops) => {
       'touchmove',
       function (e) {
         last_mouse.x = mouse.x;
-        console.log(e);
-        console.log(this.offsetLeft);
         last_mouse.y = mouse.y;
         mouse.x = e.changedTouches[0].pageX - this.offsetLeft;
         mouse.y = e.changedTouches[0].pageY - this.offsetTop;
@@ -131,7 +118,7 @@ const Board = (props: Iprops) => {
       false
     );
 
-    var onPaint = function () {
+    const onPaint = () => {
       ctx.beginPath();
       ctx.moveTo(last_mouse.x, last_mouse.y);
       ctx.lineTo(mouse.x, mouse.y);
