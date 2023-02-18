@@ -6,6 +6,7 @@ import Board from './Board'
 function App() {
   const [color, setColor] = useState<string>('#000000')
   const [size, setSize] = useState<string>('5')
+<<<<<<< Updated upstream
   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth)
 
   const isMobile = deviceWidth <= 768
@@ -22,6 +23,9 @@ function App() {
   }, [])
   
 
+=======
+  
+>>>>>>> Stashed changes
   return (
     <div className="App">
       <div className="container">

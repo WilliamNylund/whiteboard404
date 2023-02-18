@@ -16,8 +16,9 @@ type Iprops = {
   size: string
   isMobile: boolean;
 };
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const socket = io('http://localhost:5000');
+const socket = io(BASE_URL);
 
 const Board = (props: Iprops) => {
   let timeout = undefined;
@@ -25,10 +26,13 @@ const Board = (props: Iprops) => {
 
   let isDrawing = false;
 
+<<<<<<< Updated upstream
   const typeOfInteraction = props.isMobile ? ['touchmove', 'touchstart', 'touchend'] : ['mousemove', 'mousedown', 'mouseup']
 
+=======
+>>>>>>> Stashed changes
   const fetchCanvas = async () => {
-    axios.get('http://localhost:5000/canvas').then((res) => {
+    axios.get(BASE_URL + '/canvas').then((res) => {
       var image = new Image();
       var canvas = document.querySelector('#board');
       var ctx = canvas.getContext('2d');
@@ -79,7 +83,7 @@ const Board = (props: Iprops) => {
     console.log('drawOnCanvas');
     var canvas = document.querySelector('#board');
     ctx = canvas.getContext('2d');
-    console.log(props.size)
+    console.log(props.size);
     ctx.strokeStyle = props.color;
     ctx.lineWidth = props.size;
     var sketch = document.querySelector('#sketch');

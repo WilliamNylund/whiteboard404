@@ -1,23 +1,26 @@
+require('dotenv').config()
 var express = require('express');
 var cors = require('cors');
 var app = express();
 app.use(cors());
 
+clientUrl = process.env.CLIENT_URL
+console.log(clientUrl)
 var http = require('http').createServer(app);
 var socketIO = require('socket.io');
 
-currData = 'null';
+currData = null;
 
 const io = socketIO(http, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: clientUrl,
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
 
 var corsOptions = {
-  origin: 'http://localhost:5173',
+  origin: clientUrl,
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
