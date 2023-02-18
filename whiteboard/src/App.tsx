@@ -18,7 +18,7 @@ function App() {
 
                     <div className="brushsize-container">
                         Select Brush Size : &nbsp; 
-                        <select value={size} onChange={(e) => setColor(e.target.value)}>
+                        <select value={size} onChange={(e) => setSize(e.target.value)}>
                             <option> 5 </option>
                             <option> 10 </option>
                             <option> 15 </option>
