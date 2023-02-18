@@ -26,11 +26,8 @@ const Board = (props: Iprops) => {
 
   let isDrawing = false;
 
-<<<<<<< Updated upstream
   const typeOfInteraction = props.isMobile ? ['touchmove', 'touchstart', 'touchend'] : ['mousemove', 'mousedown', 'mouseup']
 
-=======
->>>>>>> Stashed changes
   const fetchCanvas = async () => {
     axios.get(BASE_URL + '/canvas').then((res) => {
       var image = new Image();
