@@ -13,7 +13,8 @@ import axios from 'axios';
 
 type Iprops = {
   color: string;
-  size: string;
+  size: string
+  isMobile: boolean;
 };
 
 const socket = io('http://localhost:5000');
@@ -23,8 +24,9 @@ const Board = (props: Iprops) => {
   let ctx = undefined;
 
   let isDrawing = false;
-  console.log(props.color);
-  console.log(props.size);
+
+  const typeOfInteraction = props.isMobile ? ['touchmove', 'touchstart', 'touchend'] : ['mousemove', 'mousedown', 'mouseup']
+
   const fetchCanvas = async () => {
     axios.get('http://localhost:5000/canvas').then((res) => {
       var image = new Image();
@@ -57,6 +59,13 @@ const Board = (props: Iprops) => {
       }, 200);
     });
     drawOnCanvas();
+    
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('pong');
+    };
+    
   }, []);
 
   useEffect(() => {
@@ -83,12 +92,18 @@ const Board = (props: Iprops) => {
 
     /* Mouse Capturing Work */
     canvas.addEventListener(
-      'touchmove',
+      typeOfInteraction[0],
       function (e) {
         last_mouse.x = mouse.x;
         last_mouse.y = mouse.y;
-        mouse.x = e.changedTouches[0].pageX - this.offsetLeft;
-        mouse.y = e.changedTouches[0].pageY - this.offsetTop;
+        if (props.isMobile) {
+            mouse.x = e.changedTouches[0].pageX - this.offsetLeft;
+            mouse.y = e.changedTouches[0].pageY - this.offsetTop;
+        } else {
+            mouse.x = e.pageX - this.offsetLeft;
+            mouse.y = e.pageY - this.offsetTop;
+        }
+        
       },
       false
     );
@@ -100,20 +115,20 @@ const Board = (props: Iprops) => {
     ctx.strokeStyle = props.color;
 
     canvas.addEventListener(
-      'touchstart',
+      typeOfInteraction[1],
       function (e) {
-        console.log('mousedown');
-        canvas.addEventListener('touchmove', onPaint, false);
+        console.log(typeOfInteraction[1]);
+        canvas.addEventListener(typeOfInteraction[0], onPaint, false);
       },
       false
     );
 
     canvas.addEventListener(
-      'touchend',
+      typeOfInteraction[2],
       function () {
-        console.log('mouseup');
+        console.log(typeOfInteraction[2]);
         mouse = { x: undefined, y: undefined };
-        canvas.removeEventListener('touchmove', onPaint, false);
+        canvas.removeEventListener(typeOfInteraction[0], onPaint, false);
       },
       false
     );

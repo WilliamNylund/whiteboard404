@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import Board from './Board'
@@ -6,6 +6,21 @@ import Board from './Board'
 function App() {
   const [color, setColor] = useState<string>('#000000')
   const [size, setSize] = useState<string>('5')
+  const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth)
+
+  const isMobile = deviceWidth <= 768
+
+  const handleSizeChange = () => {
+    setDeviceWidth(window.innerWidth)
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', handleSizeChange)
+    return () => {
+        window.removeEventListener('resize', handleSizeChange)
+    }
+  }, [])
+  
 
   return (
     <div className="App">
@@ -31,7 +46,7 @@ function App() {
                 </div>
 
                 <div className="board-container">
-                    <Board color={color} size={size}></Board>
+                    <Board color={color} size={size} isMobile={isMobile}></Board>
                 </div>
             </div>
     </div>
