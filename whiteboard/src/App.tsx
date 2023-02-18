@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 import Board from './Board'
-
+import axios from 'axios'
 function App() {
   const [color, setColor] = useState<string>('#000000')
   const [size, setSize] = useState<string>('5')
@@ -12,6 +12,11 @@ function App() {
 
   const handleSizeChange = () => {
     setDeviceWidth(window.innerWidth)
+  }
+
+  if (window.location.pathname === '/super-secret-board-clear') {
+    // Super secret way to clear the board
+    axios.get(import.meta.env.VITE_API_BASE_URL + '/super-secret-board-clear')
   }
 
   useEffect(() => {

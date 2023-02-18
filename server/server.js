@@ -9,7 +9,7 @@ console.log(clientUrl)
 var http = require('http').createServer(app);
 var socketIO = require('socket.io');
 
-currData = null;
+currBoard = null;
 
 const io = socketIO(http, {
   cors: {
@@ -28,13 +28,20 @@ io.on('connection', (socket) => {
   socket.on('canvas-data', (data) => {
     console.log('emitting data');
     socket.broadcast.emit('canvas-data', data);
-    currData = data;
+    currBoard = data;
   });
 });
 
 app.get('/canvas', cors(corsOptions), (req, res) => {
-  res.send(currData);
+  res.send(currBoard);
 });
+
+
+app.get('/super-secret-board-clear', cors(corsOptions), (req, res) => {
+      currBoard = null
+      return res.send('cleared')
+    });
+    
 
 var server_port = process.env.YOUR_PORT || process.env.PORT || 5000;
 http.listen(server_port, () => {
