@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 import axios from 'axios';
+
 /* 
 1. Shit kommer probably att blir overwritten, probably not a problem tbh
 2. Mobile dimensions
@@ -93,8 +94,8 @@ const Board = (props: Iprops) => {
     ctx.lineWidth = props.size;
     var sketch = document.querySelector('#sketch');
     var sketch_style = getComputedStyle(sketch);
-    canvas.width = parseInt(sketch_style.getPropertyValue('width'));
-    canvas.height = parseInt(sketch_style.getPropertyValue('height'));
+    canvas.width = window.innerWidth //parseInt(sketch_style.getPropertyValue('width'));
+    canvas.height = window.innerHeight //parseInt(sketch_style.getPropertyValue('height'));
 
     canvas.width = canvas?.clientWidth;
     canvas.height = canvas?.clientHeight;
@@ -109,6 +110,8 @@ const Board = (props: Iprops) => {
         let inMemCtx = inMemCanvas.getContext('2d');
         let newWidth = canvas?.clientWidth;
         let newHeight = canvas?.clientHeight;
+        ctx.strokeStyle = props.color;
+        ctx.lineWidth = props.size;
         if (canvas.width != newWidth || canvas.height != newHeight){
           inMemCanvas.width = canvas.width;
           inMemCanvas.height = canvas.height;
@@ -185,9 +188,10 @@ const Board = (props: Iprops) => {
 
   return (
     <div className="sketch" id="sketch">
-      <div className='centered'><h2>- 404 -</h2>
-      <p>Oops! This page does not exist anymore</p>
-      <p>Feel free to drop a drawing</p>
+      <div className='centered'>
+        <h2>- 404 -</h2>
+        <p>Oops! This page does not exist anymore</p>
+        <p>Feel free to drop a drawing</p>
       </div>
       <canvas className="board" id="board"></canvas>
     </div>
