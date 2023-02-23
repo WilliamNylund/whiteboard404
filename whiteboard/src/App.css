@@ -23,7 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 2%;
+  margin-bottom: 0px;
 }
 
 .board-container {
@@ -50,8 +50,7 @@
 .navbar {
   width: 100%;
   background-color: black;
-  padding-top: 2%;
-  margin-bottom: 2%;
+  margin-bottom: 0%;
   text-align: center;
   font-weight: 500;
 }
@@ -60,10 +59,10 @@
   padding: 0.85%;
   color: white;
   text-decoration: none;
-  
+  float: right;
 }
 
-a:hover {
+.navItems:hover {
   background-color: rgba(29, 29, 29, 0.9);
   border-radius: 5px;
 }
@@ -147,4 +146,13 @@ body {
   .text-404 {
     font-size: 10px;
   }
+}
+
+.navItemContainer {
+  display: inline-block;
+  width: 90%;
+}
+
+img {
+  margin-top: 0%;
 }

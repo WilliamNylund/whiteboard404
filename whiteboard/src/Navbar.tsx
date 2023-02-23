@@ -34,11 +34,15 @@ const NavBar = ( {isMobile}: {isMobile:boolean} ) => {
   }
 
   return (
-    <div>
-      <img src={albin} alt='Albin' width={50} height={50}></img>
-      {navItems.map((item) => 
-        <a href={item[1]} className='navItems'>{item[0]}</a>
-      )}
+    <div className='mainNavContainer'>
+      <a href={baseUrl}>
+        <img src={albin} alt='Albin' width={50} height={50}></img>
+      </a>
+      <div className='navItemContainer'>
+        {navItems.map((item) => 
+          <a href={item[1]} className='navItems'>{item[0]}</a>
+        ).reverse()}
+      </div>
     </div>
   )
 }
