@@ -1,16 +1,8 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 import axios from 'axios';
-/* 
-1. Shit kommer probably att blir overwritten, probably not a problem tbh
-2. Mobile dimensions
-2.1 Dimensions
-
-*/
-
-import sadAlbin from './assets/sad_albin.png'
 
 type Iprops = {
   color: string;
@@ -27,8 +19,7 @@ const Board = (props: Iprops) => {
   let ctx = undefined;
 
   let isDrawing = false;
-  let inMemCanvas = document.createElement('canvas');
-  let inMemCtx = inMemCanvas.getContext('2d');
+
   const typeOfInteraction = props.isMobile
     ? ['touchmove', 'touchstart', 'touchend']
     : ['mousemove', 'mousedown', 'mouseup'];
@@ -37,14 +28,13 @@ const Board = (props: Iprops) => {
     axios
       .get(BASE_URL + '/canvas')
       .then((res) => {
-        var image = new Image();
-        var canvas = document.querySelector('#board');
-        var ctx = canvas.getContext('2d');
-        image.onload = function () {
+        let image = new Image();
+        let canvas = document.querySelector('#board');
+        let ctx = canvas.getContext('2d');
+        image.onload = () => {
           ctx.drawImage(image, 0, 0);
           isDrawing = false;
         };
-        console.log("res.data", res.data)
         image.src = res.data;
       });
   };
@@ -53,28 +43,24 @@ const Board = (props: Iprops) => {
     fetchCanvas();
     drawOnCanvas();
 
-
     socket.on(
       'canvas-data',
-      function (data) {
-        var interval = setInterval(function () {
+      (data) => {
+        let interval = setInterval(() => {
           if (isDrawing) return;
           isDrawing = true;
           clearInterval(interval);
-          var image = new Image();
-          var canvas = document.querySelector('#board');
-          var ctx = canvas.getContext('2d');
-          image.onload = function () {
+          let image = new Image();
+          let canvas = document.querySelector('#board');
+          let ctx = canvas.getContext('2d');
+          image.onload = () => {
             ctx.drawImage(image, 0, 0, canvas?.clientWidth, canvas?.clientHeight ); //, canvas?.clientWidth, canvas?.clientHeight 
             isDrawing = false;
-          };
-          console.log(data);
-          
+          };          
           image.src = data;
         }, 200);
       }
     );
-    
     
     return () => {
       socket.off('canvas-data');
@@ -82,31 +68,27 @@ const Board = (props: Iprops) => {
   }, []);
 
   useEffect(() => {
-    var canvas = document.querySelector('#board');
-    var ctx = canvas.getContext('2d');
+    let canvas = document.querySelector('#board');
+    let ctx = canvas.getContext('2d');
     ctx.strokeStyle = props.color;
     ctx.lineWidth = props.size;
   }, [props.color, props.size]);
 
   const drawOnCanvas = () => {
-    var canvas = document.querySelector('#board');
+    let canvas = document.querySelector('#board');
     ctx = canvas.getContext('2d');
     ctx.strokeStyle = props.color;
     ctx.lineWidth = props.size;
-    var sketch = document.querySelector('#sketch');
-    var sketch_style = getComputedStyle(sketch);
-    canvas.width = window.innerWidth //parseInt(sketch_style.getPropertyValue('width'));
-    canvas.height = window.innerHeight //parseInt(sketch_style.getPropertyValue('height'));
 
     canvas.width = canvas?.clientWidth;
     canvas.height = canvas?.clientHeight;
-    var mouse = { x: undefined, y: undefined };
-    var last_mouse = { x: 0, y: 0 };
+    let mouse = { x: undefined, y: undefined };
+    let last_mouse = { x: 0, y: 0 };
     
 
     window.addEventListener(
       'resize',
-      function () {
+      () => {
         let inMemCanvas = document.createElement('canvas');
         let inMemCtx = inMemCanvas.getContext('2d');
         let newWidth = canvas?.clientWidth;
@@ -121,11 +103,10 @@ const Board = (props: Iprops) => {
           canvas.height = newHeight
           ctx.drawImage(inMemCanvas, 0, 0, newWidth, newHeight);
         }
-        
       }
     );
   
-    /* Mouse Capturing Work */
+    // Capturing mouse movement
     canvas.addEventListener(
       typeOfInteraction[0],
       function (e) {
@@ -144,7 +125,6 @@ const Board = (props: Iprops) => {
       false
     );
 
-    /* Drawing on Paint App */
     ctx.lineWidth = props.size;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
@@ -152,7 +132,7 @@ const Board = (props: Iprops) => {
 
     canvas.addEventListener(
       typeOfInteraction[1],
-      function (e) {
+      (e) => {
         e.preventDefault();
         canvas.addEventListener(typeOfInteraction[0], onPaint, false);
       },
@@ -161,7 +141,7 @@ const Board = (props: Iprops) => {
 
     canvas.addEventListener(
       typeOfInteraction[2],
-      function (e) {
+      (e) => {
         e.preventDefault();
         mouse = { x: undefined, y: undefined };
         canvas.removeEventListener(typeOfInteraction[0], onPaint, false);
@@ -177,8 +157,8 @@ const Board = (props: Iprops) => {
       ctx.stroke();
 
       if (timeout != undefined) clearTimeout(timeout);
-      timeout = setTimeout(function () {
-        var base64ImageData = canvas.toDataURL('image/png');
+      timeout = setTimeout(() => {
+        let base64ImageData = canvas.toDataURL('image/png');
         socket.emit(
           'canvas-data',
           base64ImageData
@@ -186,7 +166,6 @@ const Board = (props: Iprops) => {
       }, 1000);
     };
   };
-  //          <img src={sadAlbin} alt="sad albin" width={'50px'} className='img-404'/>
 
   return (
     <div className="sketch" id="sketch">

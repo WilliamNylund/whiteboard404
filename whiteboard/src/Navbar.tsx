@@ -39,8 +39,8 @@ const NavBar = ( {isMobile}: {isMobile:boolean} ) => {
         <img src={albin} alt='Albin' width={50} height={50}></img>
       </a>
       <div className='navItemContainer'>
-        {navItems.map((item) => 
-          <a href={item[1]} className='navItems'>{item[0]}</a>
+        {navItems.map((item, key) => 
+          <a href={item[1]} className='navItems' key={key}>{item[0]}</a>
         ).reverse()}
       </div>
     </div>
