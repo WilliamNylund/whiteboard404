@@ -126,7 +126,6 @@ const Board = (props: Iprops) => {
       typeOfInteraction[0],
       function (e) {
         e.preventDefault();
-        e.preventDefault();
         last_mouse.x = mouse.x;
         last_mouse.y = mouse.y;
 
