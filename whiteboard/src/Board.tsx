@@ -95,6 +95,8 @@ const Board = (props: Iprops) => {
     canvas.addEventListener(
       typeOfInteraction[0],
       function (e) {
+        e.preventDefault();
+        e.preventDefault();
         last_mouse.x = mouse.x;
         last_mouse.y = mouse.y;
         if (props.isMobile) {
@@ -118,6 +120,8 @@ const Board = (props: Iprops) => {
     canvas.addEventListener(
       typeOfInteraction[1],
       function (e) {
+        e.preventDefault();
+        e.preventDefault();
         console.log(typeOfInteraction[1]);
         canvas.addEventListener(typeOfInteraction[0], onPaint, false);
       },
@@ -126,7 +130,9 @@ const Board = (props: Iprops) => {
 
     canvas.addEventListener(
       typeOfInteraction[2],
-      function () {
+      function (e) {
+        e.preventDefault();
+        e.preventDefault();
         console.log(typeOfInteraction[2]);
         mouse = { x: undefined, y: undefined };
         canvas.removeEventListener(typeOfInteraction[0], onPaint, false);
