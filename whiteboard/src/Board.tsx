@@ -29,7 +29,7 @@ const Board = (props: Iprops) => {
   const typeOfInteraction = props.isMobile ? ['touchmove', 'touchstart', 'touchend'] : ['mousemove', 'mousedown', 'mouseup']
 
   const fetchCanvas = async () => {
-    axios.get(BASE_URL + '/canvas').then((res) => {
+    axios.get(props.isMobile ? BASE_URL + '/mobile-canvas' : BASE_URL + '/canvas').then((res) => {
       var image = new Image();
       var canvas = document.querySelector('#board');
       var ctx = canvas.getContext('2d');
@@ -44,7 +44,7 @@ const Board = (props: Iprops) => {
   useEffect(() => {
     fetchCanvas();
 
-    socket.on('canvas-data', function (data) {
+    socket.on(props.isMobile ? 'canvas-mobile-data' : 'canvas-data' , function (data) {
       var interval = setInterval(function () {
         if (isDrawing) return;
         isDrawing = true;
@@ -146,7 +146,7 @@ const Board = (props: Iprops) => {
         console.log('sending canvas data');
 
         var base64ImageData = canvas.toDataURL('image/png');
-        socket.emit('canvas-data', base64ImageData);
+        socket.emit(props.isMobile ? 'canvas-mobile-data' : 'canvas-data', base64ImageData);
       }, 1000);
     };
   };

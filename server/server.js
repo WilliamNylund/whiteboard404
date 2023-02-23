@@ -10,6 +10,7 @@ var http = require('http').createServer(app);
 var socketIO = require('socket.io');
 
 currBoard = null;
+currMobileBoard = null;
 
 const io = socketIO(http, {
   cors: {
@@ -30,15 +31,24 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('canvas-data', data);
     currBoard = data;
   });
+  socket.on('canvas-mobile-data', (data) => {
+    console.log('emitting mobile data');
+    socket.broadcast.emit('canvas-mobile-data', data);
+    currMobileBoard = data;
+  });
 });
 
 app.get('/canvas', cors(corsOptions), (req, res) => {
   res.send(currBoard);
 });
 
+app.get('/mobile-canvas', cors(corsOptions), (req, res) => {
+  res.send(currMobileBoard);
+});
 
 app.get('/super-secret-board-clear', cors(corsOptions), (req, res) => {
       currBoard = null
+      currMobileBoard = null
       return res.send('cleared')
     });
     
