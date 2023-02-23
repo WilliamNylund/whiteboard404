@@ -6,7 +6,7 @@ import axios from 'axios'
 import NavBar from './Navbar'
 
 function App() {
-  const [color, setColor] = useState<string>('#FFFFFF')
+  const [color, setColor] = useState<string>('#D0FF00')
   const [size, setSize] = useState<string>('5')
   const [deviceWidth, setDeviceWidth] = useState<number>(window.innerWidth)
 

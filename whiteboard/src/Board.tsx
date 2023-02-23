@@ -1,10 +1,8 @@
 // @ts-nocheck
-
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import './App.css';
 import axios from 'axios';
-
 /* 
 1. Shit kommer probably att blir overwritten, probably not a problem tbh
 2. Mobile dimensions
@@ -12,11 +10,14 @@ import axios from 'axios';
 
 */
 
+import sadAlbin from './assets/sad_albin.png'
+
 type Iprops = {
   color: string;
   size: string;
   isMobile: boolean;
 };
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const socket = io(BASE_URL);
@@ -185,13 +186,18 @@ const Board = (props: Iprops) => {
       }, 1000);
     };
   };
+  //          <img src={sadAlbin} alt="sad albin" width={'50px'} className='img-404'/>
 
   return (
     <div className="sketch" id="sketch">
       <div className='centered'>
-        <h2>- 404 -</h2>
-        <p>Oops! This page does not exist anymore</p>
-        <p>Feel free to drop a drawing</p>
+        <div className='error-main'>
+          <h2 className='header-404'>404</h2>
+
+        </div>
+        <p className='text-404'>Oops, the page you're looking for does not exist.</p>
+        <p className='sub'>Greet other lost souls with a drawing!</p>
+        
       </div>
       <canvas className="board" id="board"></canvas>
     </div>
