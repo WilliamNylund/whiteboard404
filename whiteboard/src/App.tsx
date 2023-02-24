@@ -23,37 +23,39 @@ function App() {
   useEffect(() => {
     window.addEventListener('resize', handleSizeChange)
     return () => {
-        window.removeEventListener('resize', handleSizeChange)
+      window.removeEventListener('resize', handleSizeChange)
     }
   }, [])
-  
 
   return (
     <div className="App">
       <div className="container">
-        <div className='navbar'>
-          <NavBar isMobile={isMobile}/>
-            <div className="tools-section">
-              <div className="color-picker-container">
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)}/>
-              </div>
-                <div className="brushsize-container">
-                
-                  <select value={size} onChange={(e) => setSize(e.target.value)}>
-                    <option> 5 </option>
-                    <option> 10 </option>
-                    <option> 15 </option>
-                    <option> 20 </option>
-                    <option> 25 </option>
-                    <option> 30 </option>
-                </select>
-              </div>
+        <div className="navbar">
+          <NavBar isMobile={isMobile} />
+          <div className="tools-section">
+            <div className="color-picker-container">
+              <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+              />
+            </div>
+            <div className="brushsize-container">
+              <select value={size} onChange={(e) => setSize(e.target.value)}>
+                <option> 5 </option>
+                <option> 10 </option>
+                <option> 15 </option>
+                <option> 20 </option>
+                <option> 25 </option>
+                <option> 30 </option>
+              </select>
             </div>
           </div>
+        </div>
         <div className="board-container">
           <Board color={color} size={size} isMobile={isMobile}></Board>
         </div>
-    </div>
+      </div>
     </div>
   )
 }
