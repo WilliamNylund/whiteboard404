@@ -85,8 +85,6 @@ const Board = (props: Iprops) => {
       let inMemCtx = inMemCanvas.getContext('2d');
       let newWidth = canvas?.clientWidth;
       let newHeight = canvas?.clientHeight;
-      ctx.strokeStyle = props.color;
-      ctx.lineWidth = props.size;
       if (canvas.width != newWidth || canvas.height != newHeight) {
         inMemCanvas.width = canvas.width;
         inMemCanvas.height = canvas.height;
@@ -94,6 +92,8 @@ const Board = (props: Iprops) => {
         canvas.width = newWidth;
         canvas.height = newHeight;
         ctx.drawImage(inMemCanvas, 0, 0, newWidth, newHeight);
+        ctx.strokeStyle = props.color;
+        ctx.lineWidth = props.size;
       }
     });
 
